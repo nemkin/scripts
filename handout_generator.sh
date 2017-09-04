@@ -27,7 +27,7 @@ pdftk A="${PDF}" B=blank.pdf cat ${COMMAND} output combined.pdf
 
 # convert combined.pdf -bordercolor black -border 10 with_border.pdf
 
-pdfjam combined.pdf --offset '2cm 0cm' --nup 2x3 --a4paper --no-landscape --frame true --outfile ${NAME}_handout.pdf
+pdfjam combined.pdf --offset '2cm 0cm' --nup 2x3 --a4paper --no-landscape --frame true --outfile "${NAME}"_handout.pdf
 
 rm blank.pdf
 rm combined.pdf
