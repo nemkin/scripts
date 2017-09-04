@@ -7,6 +7,10 @@
 
 PDF="$1"
 
+NAME="${1%.pdf}"
+
+echo "Name  "${NAME}
+
 PAGES=$(pdftk "${PDF}" dump_data | grep NumberOfPages | sed 's/NumberOfPages: \([0-9]*\)/\1/')
 SIZEX=$(pdftk "${PDF}" dump_data | grep PageMediaDimensions | head -n 1 | sed 's/PageMediaDimensions: \([0-9]*\) \([0-9]*\)/\1/')
 SIZEY=$(pdftk "${PDF}" dump_data | grep PageMediaDimensions | head -n 1 | sed 's/PageMediaDimensions: \([0-9]*\) \([0-9]*\)/\2/')
@@ -23,6 +27,7 @@ pdftk A="${PDF}" B=blank.pdf cat ${COMMAND} output combined.pdf
 
 # convert combined.pdf -bordercolor black -border 10 with_border.pdf
 
-pdfjam combined.pdf --offset '2cm 0cm' --nup 2x3 --a4paper --no-landscape --frame true --outfile result.pdf
+pdfjam combined.pdf --offset '2cm 0cm' --nup 2x3 --a4paper --no-landscape --frame true --outfile ${NAME}_handout.pdf
 
 rm blank.pdf
+rm combined.pdf
