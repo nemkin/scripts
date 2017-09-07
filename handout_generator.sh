@@ -21,13 +21,30 @@ echo "SizeY: "${SIZEY}
 
 convert xc:white -page ${SIZEX}x${SIZEY} blank.pdf
 
-COMMAND=$(seq ${PAGES} | xargs -i echo "A{} B1" | tr '\n' ' ')
+PLUS=$((2*(4-(PAGES % 4))))
+
+if [ "$PLUS" -eq "8" ]; then
+   PLUS=0;
+fi
+
+COMMAND=$((seq ${PAGES} | xargs -i echo "A{} B1"); (seq $PLUS  | xargs -i echo "B1") | tr '\n' ' ')
+
+echo $COMMAND
 
 pdftk A="${PDF}" B=blank.pdf cat ${COMMAND} output combined.pdf
 
 # convert combined.pdf -bordercolor black -border 10 with_border.pdf
 
-pdfjam combined.pdf --offset '2cm 0cm' --nup 2x3 --a4paper --no-landscape --frame true --outfile "${NAME}"_handout.pdf
+pdfjam combined.pdf --nup 2x4 --clip true --frame true --outfile fixed.pdf
+
+pdfcrop fixed.pdf nowhite.pdf
+
+pdfcrop --margin '40 20 40 20' fixed.pdf very_fixed.pdf
+
+pdfjam very_fixed.pdf --twoside --offset '40px 0px' --a4paper --no-landscape --outfile "${NAME}"_handout.pdf
 
 rm blank.pdf
 rm combined.pdf
+rm nowhite.pdf
+rm fixed.pdf
+rm very_fixed.pdf
