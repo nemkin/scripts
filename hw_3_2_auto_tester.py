@@ -60,14 +60,13 @@ for i in range(max_length+1):
               false_positive_examples.append(test)
 
 print("Number of testcases: {}".format(number_of_tests))
-print("Maximum length of testcases: {}".format(max_length))
 print()
 print("False positives: {}".format(false_positives))
 print("Examples of false positives: " + ", ".join(false_positive_examples))
 print()
 print("False negatives: {}".format(false_negatives))
 print("Examples of false negatives: " + ", ".join(false_negative_examples))
-
+print()
 if false_positives + false_negatives == 0:
   print("Verdict: \033[1;32;40mPossibly CORRECT, check manually.")
 else:
