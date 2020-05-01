@@ -2,6 +2,12 @@ import sys
 import itertools
 import re
 
+class bash:
+    green = '\033[92m'
+    red = '\033[91m'
+    end_color = '\033[0m'
+    clean_line = '\033[K'
+
 if len(sys.argv) < 2:
   print("Missing regexp as first parameter.")
   sys.exit()
@@ -23,7 +29,6 @@ regexp = '^' + input.replace('+','|').replace('e','').replace('u','|') + '$'
 print("Original regexp: {}".format(input))
 print("Translated regexp in Python format: {}".format(regexp))
 print()
-print("Checking on input strings with a maximum length of {}...".format(max_length))
 
 def generate_tests(length):
     chars = "01"
@@ -43,7 +48,9 @@ false_positive_examples = []
 
 for i in range(max_length+1):
     for test in generate_tests(i):
+
         number_of_tests += 1
+        print("Checking on input strings with a maximum length of {}... Length: {}, Test case: {}".format(max_length, i, number_of_tests), end = '\r')
 
         should_match = "00" not in test
         does_match = re.search(regexp, test) is not None
@@ -66,7 +73,8 @@ for i in range(max_length+1):
             if len(false_positive_examples) < example_count:
               false_positive_examples.append(test)
 
-print()
+sys.stdout.write(bash.clean_line)
+print("Checking on input strings with a maximum length of {}... Done.".format(max_length))
 print("Number of testcases: {}".format(number_of_tests))
 print()
 print("True positives: {}".format(true_positives))
@@ -81,7 +89,6 @@ print("Precision: {:.4f}%".format(true_positives / (true_positives + false_posit
 print("Recall: {:.4f}%".format(true_positives / (true_positives + false_negatives) * 100))
 print()
 if false_positives + false_negatives == 0:
-  print("Verdict: \033[1;32;40mPossibly CORRECT, check manually.")
+  print("Verdict: {}Possibly CORRECT, check manually.{}".format(bash.green, bash.end_color))
 else:
-  print("Verdict: \033[1;31;40mINCORRECT")
-
+  print("Verdict: {}INCORRECT{}".format(bash.red, bash.end_color))
