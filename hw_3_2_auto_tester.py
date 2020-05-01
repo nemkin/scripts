@@ -25,7 +25,7 @@ print("HW-3-2 Automatic Tester")
 print("https://github.com/nemkin/scripts/blob/master/hw_3_2_auto_tester.py")
 print()
 
-regexp = '^' + input.replace('+','|').replace('e','').replace('u','|') + '$'
+regexp = '^(' + input.replace('+','|').replace('e','').replace('u','|') + ')$'
 print("Original regexp: {}".format(input))
 print("Translated regexp in Python format: {}".format(regexp))
 print()
