@@ -33,6 +33,8 @@ def generate_tests(length):
 number_of_tests = 0
 example_count = 20
 
+true_negatives = 0
+true_positives = 0
 false_negatives = 0
 false_positives = 0
 
@@ -48,7 +50,13 @@ for i in range(max_length+1):
   
         if test == "":
           test = "empty string"
-        if should_match != does_match:
+        
+        if should_match == does_match:
+          if should_match and does_match:
+            true_positives += 1
+          if not should_match and not does_match:
+            true_negatives += 1
+        else:
           if should_match and not does_match:
             false_negatives += 1
             if len(false_negative_examples) < example_count:
@@ -58,13 +66,19 @@ for i in range(max_length+1):
             if len(false_positive_examples) < example_count:
               false_positive_examples.append(test)
 
+print()
 print("Number of testcases: {}".format(number_of_tests))
 print()
+print("True positives: {}".format(true_positives))
+print("True negatives: {}".format(true_negatives))
 print("False positives: {}".format(false_positives))
-print("Examples of false positives: " + ", ".join(false_positive_examples))
-print()
 print("False negatives: {}".format(false_negatives))
+print()
+print("Examples of false positives: " + ", ".join(false_positive_examples))
 print("Examples of false negatives: " + ", ".join(false_negative_examples))
+print()
+print("Precision: {:.4f}%".format(true_positives / (true_positives + false_positives) * 100))
+print("Recall: {:.4f}%".format(true_positives / (true_positives + false_negatives) * 100))
 print()
 if false_positives + false_negatives == 0:
   print("Verdict: \033[1;32;40mPossibly CORRECT, check manually.")
