@@ -14,6 +14,11 @@ if len(sys.argv) < 3:
 input = sys.argv[1]
 max_length = int(sys.argv[2])
 
+print()
+print("HW-3-2 Automatic Tester")
+print("https://github.com/nemkin/scripts/blob/master/hw_3_2_auto_tester.py")
+print()
+
 regexp = '^' + input.replace('+','|').replace('e','').replace('u','|') + '$'
 print()
 print("Original regexp: {}".format(input))
